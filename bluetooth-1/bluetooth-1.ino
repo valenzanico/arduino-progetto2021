@@ -1,20 +1,6 @@
 /*
-   -- New project --
-   
-   This source code of graphical user interface 
-   has been generated automatically by RemoteXY editor.
-   To compile this code using RemoteXY library 2.4.3 or later version 
-   download by link http://remotexy.com/en/library/
-   To connect using RemoteXY mobile app by link http://remotexy.com/en/download/                   
-     - for ANDROID 4.7.12 or later version;
-     - for iOS 1.4.7 or later version;
-    
-   This source code is free software; you can redistribute it and/or
-   modify it under the terms of the GNU Lesser General Public
-   License as published by the Free Software Foundation; either
-   version 2.1 of the License, or (at your option) any later version.    
-*/
-
+ * descrizione
+ */
 //////////////////////////////////////////////
 //        RemoteXY include library          //
 //////////////////////////////////////////////
@@ -29,25 +15,24 @@
 #define REMOTEXY_SERIAL_RX 2
 #define REMOTEXY_SERIAL_TX 3
 #define REMOTEXY_SERIAL_SPEED 9600
+#define REMOTEXY_ACCESS_PASSWORD "1234"
 
 
 // RemoteXY configurate  
 #pragma pack(push, 1)
 uint8_t RemoteXY_CONF[] =
-  { 255,0,0,26,0,50,0,11,39,0,
-  130,0,2,18,26,25,109,130,0,38,
-  18,25,25,109,130,1,70,19,28,24,
-  17,68,17,70,19,28,24,8,164,67,
-  5,5,28,20,5,164,26,11,67,5,
-  40,28,20,5,164,26,11 };
+  { 255,0,0,8,0,43,0,11,39,0,
+  68,49,3,11,43,40,8,164,84,101,
+  109,112,101,114,97,116,117,114,97,0,
+  68,49,53,11,45,40,8,164,76,117,
+  109,105,110,111,115,105,116,195,160,0 };
   
 // this structure defines all the variables and events of your control interface 
 struct {
 
     // output variables
   float graphData1;
-  char value1[11];  // string UTF8 end zero 
-  char value2[11];  // string UTF8 end zero 
+  float graphData2;
 
     // other variable
   uint8_t connect_flag;  // =1 if wire connected, else =0 
@@ -59,37 +44,48 @@ struct {
 //           END RemoteXY include          //
 /////////////////////////////////////////////
 
-//librerie sensore temperatura
+//inizio setup sensore temperatura
 #include <OneWire.h> 
 #include <DallasTemperature.h> 
 // Il filo dati è collegato al pin 2 su Arduino 
-#define ONE_WIRE_BUS 2 
+#define ONE_WIRE_BUS 11
 // Configura un'istanza oneWire per comunicare con qualsiasi dispositivo OneWire (non solo  IC di temperatura Maxim / Dallas) 
 OneWire oneWire(ONE_WIRE_BUS); 
 // Passa il nostro riferimento oneWire a Dallas Temperature.  
 DallasTemperature sensors(&oneWire); 
+//fine setup sensore di temperatura
+
+//inizio setup sensore luminosità
+int fotoresistenza_Pin = A0 ;
+//fine setup sensore luminosità
 
 void setup() 
 {
   Serial.begin(9600);
   RemoteXY_Init (); 
   sensors.begin();
-  
-  // TODO you setup code
-  
 }
 
 void loop() 
 { 
-  sensors.requestTemperatures();
-  float temperature = sensors.getTempCByIndex(0);
   RemoteXY_Handler ();
-  char display_temp;
-  dtostrf(temperature,7, 3, display_temp);
-  RemoteXY.value1 = display_temp;
+  int bluetooth_connesso = RemoteXY_isConnected();
   
-  // TODO you loop code
-  // use the RemoteXY structure for data transfer
-  // do not call delay() 
+  sensors.requestTemperatures();
+  float temperatura = sensors.getTempCByIndex(0);
+
+  float luminosita = alogRead(fotoresistenza_Pin);
+  
+  if (bluetooth_connesso == 1) {
+    RemoteXY.graphData1 = temperatura;
+    RemoteXY.graphData2 = luminosita;
+  }
+  else {
+    Serial.print("la temperatura è: ");
+    Serial.println(temperatura);
+    Serial.print("la luminosità è: ");
+    Serial.println(luminosita);
+  }
+
   delay(1000);
 }
