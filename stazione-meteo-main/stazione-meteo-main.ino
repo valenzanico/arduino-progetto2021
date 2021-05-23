@@ -55,6 +55,19 @@ struct {
 //           END RemoteXY include          //
 /////////////////////////////////////////////
 
+//inizio setup neopixel ring
+#include <Adafruit_NeoPixel.h>
+// Which pin on the Arduino is connected to the NeoPixels?
+#define PIN        4 // On Trinket or Gemma, suggest changing this to 1
+// How many NeoPixels are attached to the Arduino?
+#define NUMPIXELS 16 // Popular NeoPixel ring size
+// When setting up the NeoPixel library, we tell it how many pixels,
+// and which pin to use to send signals. Note that for older NeoPixel
+// strips you might need to change the third parameter -- see the
+// strandtest example for more information on possible values.
+Adafruit_NeoPixel cerchio_led(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
+//fine setup neopixel ring
+
 //inizio setup sensore temperatura
 #include <OneWire.h> 
 #include <DallasTemperature.h> 
@@ -82,11 +95,12 @@ int sensore_pressione_stato = 0;
 void setup() 
 {
   Serial.begin(9600);
-  RemoteXY_Init (); //inizializzazzione remotexy per bluetooth
-  sensore_temperatura.begin();//inizializzazzione sensore temperatura 
-  if (sensore_pressione.begin()) //inizializzazzione sensore pressione
+  RemoteXY_Init (); //inizializzazione remotexy per bluetooth
+  cerchio_led.begin();//inizializzazione neopixel ring
+  sensore_temperatura.begin();//inizializzazione sensore temperatura 
+  if (sensore_pressione.begin()) //inizializzazione sensore pressione
   {
-    sensore_pressione_stato = 1;//se l'inizializzazzione ha successo la varibail va a 1
+    sensore_pressione_stato = 1;//se l'inizializzazione ha successo la varibail va a 1
   }
   else 
   {
@@ -124,6 +138,13 @@ void loop()
   }
   }
 
+  int led_da_accendere = temperatura / 2.5;
+  cerchio_led.clear();
+  for(int n=0; n<led_da_accendere; n++) 
+  {
+    cerchio_led.setPixelColor(n, cerchio_led.Color(0, 255, 0));
+  }
+  cerchio_led.show();
   
   
   if (bluetooth_connesso == 1) //se il chip bluetooth è connesso
