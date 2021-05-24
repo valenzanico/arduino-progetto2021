@@ -25,7 +25,7 @@
 // RemoteXY configurate  
 #pragma pack(push, 1)
 uint8_t RemoteXY_CONF[] =
-  { 255,0,0,57,0,99,0,11,39,0,
+  { 255,0,0,117,0,99,0,11,39,0,
   68,49,52,-1,66,34,8,233,76,117,
   109,105,110,111,115,105,116,195,160,0,
   68,49,-14,0,66,33,8,164,84,101,
@@ -35,7 +35,7 @@ uint8_t RemoteXY_CONF[] =
   115,115,111,108,117,116,97,0,80,114,
   101,115,115,105,111,110,101,32,114,101,
   108,97,116,105,118,97,0,67,1,66,
-  45,20,5,2,26,41 };
+  45,20,5,2,26,101 };
   
 // this structure defines all the variables and events of your control interface 
 struct {
@@ -45,7 +45,7 @@ struct {
   float graphData1;
   float graphData3_var1;
   float graphData3_var2;
-  char text_1[41];  // string UTF8 end zero 
+  char text_1[101];  // string UTF8 end zero 
 
     // other variable
   uint8_t connect_flag;  // =1 if wire connected, else =0 
@@ -141,7 +141,8 @@ void loop()
     cerchio_led.setPixelColor(n, cerchio_led.Color(0, 255, 0));//imposta il led su verde 
   }
   cerchio_led.show(); //applica le nuove impostazioni
-  char testo[70];
+
+  char testo[100]; //definizione variabile char di caratteri 70
   strcpy(testo, "");
   if (temperatura > 25.00) 
   {
@@ -159,7 +160,7 @@ void loop()
   {
     strcat(testo, "è notte\n");
   }
-  if (pressione_mare < 1014.00) 
+  if (pressione_mare < 1014.00) //quando la pressione è minore c'è più probabilità che piova
   {
     strcat(testo, "attento che oggi c'è il rischio di pioggia,\nricordati di prendere l'ombrello");
   }
@@ -177,20 +178,23 @@ void loop()
      RemoteXY.graphData3_var1 = pressione;
      RemoteXY.graphData3_var2 = pressione_mare;
     }
-    strcpy(RemoteXY.text_1, "test :)");
+    strcpy(RemoteXY.text_1, testo);
   }
   else //altimenti usa il serial monitor
   {
     Serial.print("la temperatura è: ");
-    Serial.println(temperatura);
+    Serial.print(temperatura);
+    Serial.println(" C°");
     Serial.print("la luminosità è: ");
     Serial.println(luminosita);
     if (pressione)
     {
       Serial.print("la pressione relativa è: ");
-      Serial.println(pressione);
+      Serial.print(pressione);
+      Serial.println(" millibar");
       Serial.print("la pressione assoluta è: ");
-      Serial.println(pressione_mare);
+      Serial.print(pressione_mare);
+      Serial.println(" millibar");
       Serial.println(testo);
     }
     for (int n = 0; n <3; n++) 
