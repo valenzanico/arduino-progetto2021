@@ -1,5 +1,5 @@
 # Stazione metereologica
-
+https://1drv.ms/p/s!AgtvHbYe634vhuclbtxqV1gjglgasQ?e=o0zxNM
 ## Schemi
 
 ##### Schema circuito
@@ -10,6 +10,9 @@
 
 ![](./diagrammaflusso1-foto1.png)
 
+
+##### Codice 
+[stazione-meteo-main.ino](https://github.com/valenzanico/arduino-progetto2021/blob/main/stazione-meteo-main/stazione-meteo-main.ino)
 ## Come possiamo utilizzarla
 
 Come possiamo utilizzarla
