@@ -4,11 +4,11 @@
 
 ##### Schema circuito
 
-![@](/home/eagle/d/myapp/arduino-proj-fineanno/circuito-architettura2-neopximg_bb.png)
+![@](./circuito-architettura2-neopximg_bb.png)
 
 ##### Diagramma di flusso
 
-![](/home/eagle/d/myapp/arduino-proj-fineanno/diagrammaflusso1-foto1.png)
+![](./diagrammaflusso1-foto1.png)
 
 ## Come possiamo utilizzarla
 
