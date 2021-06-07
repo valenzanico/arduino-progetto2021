@@ -1,5 +1,5 @@
 # Stazione metereologica
-https://1drv.ms/p/s!AgtvHbYe634vhuclbtxqV1gjglgasQ?e=o0zxNM
+https://1drv.ms/p/s!AgtvHbYe634vhuclbtxqV1gjglgasQ?e=3GtEQl
 ## Schemi
 
 ##### Schema circuito
